@@ -1,0 +1,365 @@
+import React, { useState, useMemo } from 'react';
+import { 
+  TrendingUp, 
+  Users, 
+  Target, 
+  AlertTriangle, 
+  CheckCircle2, 
+  Info, 
+  BarChart3, 
+  Calculator, 
+  ArrowRight, 
+  Navigation,
+  Globe,
+  Star,
+  ShieldCheck,
+  Zap,
+  LayoutDashboard
+} from 'lucide-react';
+
+const Card = ({ children, className = "" }) => (
+  <div className={`bg-white rounded-xl shadow-sm border border-slate-100 p-6 ${className}`}>
+    {children}
+  </div>
+);
+
+const Badge = ({ children, variant = "default" }) => {
+  const styles = {
+    default: "bg-slate-100 text-slate-800",
+    success: "bg-emerald-100 text-emerald-800",
+    warning: "bg-amber-100 text-amber-800",
+    danger: "bg-rose-100 text-rose-800",
+    primary: "bg-indigo-100 text-indigo-800",
+  };
+  return (
+    <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${styles[variant]}`}>
+      {children}
+    </span>
+  );
+};
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState('summary');
+  const [revenueInput, setRevenueInput] = useState(45); // Current pricing estimate
+  
+  // Calculator logic
+  const revenuePotential = useMemo(() => {
+    const weeklyGuests = 100; // Sample volume
+    const currentRev = weeklyGuests * revenueInput;
+    const targetRev = weeklyGuests * 65;
+    const uplift = targetRev - currentRev;
+    return { currentRev, targetRev, uplift };
+  }, [revenueInput]);
+
+  const sections = {
+    summary: { title: "Executive Insight", icon: <LayoutDashboard size={18} /> },
+    market: { title: "Market Landscape", icon: <Globe size={18} /> },
+    diagnosis: { title: "Strategic Diagnosis", icon: <BarChart3 size={18} /> },
+    strategy: { title: "Future Roadmap", icon: <Navigation size={18} /> },
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900 pb-20">
+      {/* Navigation */}
+      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-bottom border-slate-200 shadow-sm px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">E</div>
+          <span className="text-xl font-bold tracking-tight text-indigo-950">EtnoSphere <span className="text-indigo-600">Strategic OS</span></span>
+        </div>
+        <div className="flex bg-slate-100 p-1 rounded-xl">
+          {Object.entries(sections).map(([id, { title, icon }]) => (
+            <button
+              key={id}
+              onClick={() => setActiveTab(id)}
+              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                activeTab === id ? 'bg-white shadow-sm text-indigo-600' : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              {icon}
+              <span className="hidden sm:inline">{title}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <main className="max-w-6xl mx-auto px-6 mt-8 space-y-8">
+        
+        {/* TAB: SUMMARY */}
+        {activeTab === 'summary' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <header className="space-y-4">
+              <Badge variant="primary">2024 Strategic Update</Badge>
+              <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">The Path to Destination Brand</h1>
+              <p className="text-xl text-slate-600 max-w-2xl leading-relaxed">
+                Transforming EtnoSphere from a niche service provider into Zagreb's premier "Dinner Theater" cultural icon.
+              </p>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card className="border-l-4 border-l-indigo-500">
+                <div className="bg-indigo-50 w-10 h-10 rounded-lg flex items-center justify-center text-indigo-600 mb-4">
+                  <Target size={20} />
+                </div>
+                <h3 className="font-bold text-lg mb-2">The Evening Gap</h3>
+                <p className="text-sm text-slate-500">Zagreb lacks structured entertainment for the 35-65 demographic. Massive underserved demand.</p>
+              </Card>
+              <Card className="border-l-4 border-l-emerald-500">
+                <div className="bg-emerald-50 w-10 h-10 rounded-lg flex items-center justify-center text-emerald-600 mb-4">
+                  <TrendingUp size={20} />
+                </div>
+                <h3 className="font-bold text-lg mb-2">Pricing Power</h3>
+                <p className="text-sm text-slate-500">Current offers are critically undervalued. Repositioning to €65+ is the primary growth lever.</p>
+              </Card>
+              <Card className="border-l-4 border-l-amber-500">
+                <div className="bg-amber-50 w-10 h-10 rounded-lg flex items-center justify-center text-amber-600 mb-4">
+                  <ShieldCheck size={20} />
+                </div>
+                <h3 className="font-bold text-lg mb-2">Pivot to Destination</h3>
+                <p className="text-sm text-slate-500">Moving from a "troupe for hire" to a "pull" destination like the Moulin Rouge.</p>
+              </Card>
+            </div>
+
+            {/* Interactive Calculator Gadget */}
+            <Card className="bg-indigo-900 text-white overflow-hidden relative">
+              <div className="absolute right-0 top-0 w-64 h-64 bg-white/5 rounded-full -mr-20 -mt-20 blur-3xl"></div>
+              <div className="relative z-10 grid md:grid-cols-2 gap-10 items-center">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-2 text-indigo-200">
+                    <Calculator size={18} />
+                    <span className="font-semibold uppercase tracking-wider text-xs">Revenue Opportunity Calculator</span>
+                  </div>
+                  <h2 className="text-3xl font-bold">Benchmark Your Pricing</h2>
+                  <div className="space-y-4">
+                    <label className="block text-sm text-indigo-200">Adjust Current Pricing Point (€)</label>
+                    <input 
+                      type="range" 
+                      min="25" 
+                      max="60" 
+                      value={revenueInput}
+                      onChange={(e) => setRevenueInput(Number(e.target.value))}
+                      className="w-full h-2 bg-indigo-700 rounded-lg appearance-none cursor-pointer accent-white" 
+                    />
+                    <div className="flex justify-between text-xs font-mono text-indigo-300">
+                      <span>€25 (Baseline)</span>
+                      <span className="text-white font-bold text-lg">€{revenueInput}</span>
+                      <span>€60 (High)</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-end">
+                      <span className="text-sm text-indigo-100">Estimated Weekly Revenue Uplift*</span>
+                      <span className="text-3xl font-bold text-emerald-400">+€{revenuePotential.uplift.toLocaleString()}</span>
+                    </div>
+                    <div className="h-px bg-white/10"></div>
+                    <p className="text-xs text-indigo-300 italic">*Based on a sample volume of 100 guests per week moving from €{revenueInput} to €65 regional standard.</p>
+                    <button 
+                      onClick={() => setActiveTab('strategy')}
+                      className="w-full py-3 bg-white text-indigo-900 rounded-xl font-bold hover:bg-indigo-50 transition-colors flex items-center justify-center gap-2"
+                    >
+                      Apply Pricing Strategy <ArrowRight size={16} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+
+        {/* TAB: MARKET */}
+        {activeTab === 'market' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <h2 className="text-2xl font-bold flex items-center gap-3">
+                  <Globe className="text-indigo-600" /> Zagreb Tourism Pulse
+                </h2>
+                <div className="space-y-4">
+                  <div className="p-4 bg-white rounded-xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div className="text-3xl font-black text-indigo-600">1.3M</div>
+                    <div className="text-sm text-slate-600 leading-tight">Visitors in 2023<br/><span className="text-emerald-600 font-bold">+21% Year-on-Year</span></div>
+                  </div>
+                  <div className="p-4 bg-white rounded-xl border border-slate-100 shadow-sm flex items-center gap-4">
+                    <div className="text-3xl font-black text-indigo-600">2.5</div>
+                    <div className="text-sm text-slate-600 leading-tight">Night Average Stay<br/><span className="text-slate-400">Limited "Dinner Slots" available</span></div>
+                  </div>
+                </div>
+                <p className="text-slate-600 leading-relaxed">
+                  Zagreb has successfully evolved into a standalone city-break destination. With only 2-3 nights per visit, tourists are actively seeking curated, time-efficient "Night Out" packages.
+                </p>
+              </div>
+              <Card className="bg-slate-900 text-slate-400 p-8 space-y-6">
+                <h3 className="text-white font-bold flex items-center gap-2"><Star className="text-amber-400" size={18}/> The Evening Gap</h3>
+                <div className="space-y-4">
+                  <div className="relative pl-6 border-l-2 border-slate-700">
+                    <div className="text-white font-semibold">The Youth Segment</div>
+                    <div className="text-sm">Served by bars and high-energy clubs.</div>
+                  </div>
+                  <div className="relative pl-6 border-l-2 border-indigo-500 bg-indigo-500/10 p-3 rounded-r-lg">
+                    <div className="text-white font-semibold">The "EtnoSphere" Gap</div>
+                    <div className="text-sm text-indigo-200">35-65 Demographics, Corporate, Families. Seeking structured cultural immersion.</div>
+                  </div>
+                  <div className="relative pl-6 border-l-2 border-slate-700">
+                    <div className="text-white font-semibold">The Passive Segment</div>
+                    <div className="text-sm">Served by quiet, traditional restaurants.</div>
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
+        )}
+
+        {/* TAB: DIAGNOSIS */}
+        {activeTab === 'diagnosis' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <div className="bg-rose-50 border border-rose-100 p-6 rounded-2xl flex flex-col md:flex-row gap-6 items-center">
+              <div className="bg-rose-100 text-rose-600 p-4 rounded-xl">
+                <AlertTriangle size={32} />
+              </div>
+              <div>
+                <h3 className="text-rose-900 font-bold text-lg">Critical Alert: Brand Confusion</h3>
+                <p className="text-rose-700 text-sm">Hearts of Zagreb is a <strong>direct competitor</strong>, not a subsidiary. Co-location at Hrvatska kuća creates dangerous reputational risk. Immediate market differentiation is non-negotiable.</p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <h3 className="font-bold text-slate-800 flex items-center gap-2"><Zap size={18} className="text-amber-500"/> Core Strengths</h3>
+                <div className="grid gap-3">
+                  {["Unmatched Authenticity", "Unique Historic Venue", "B2B Operational Flexibility", "Strong Visual Anchor"].map(s => (
+                    <div key={s} className="flex items-center gap-3 p-3 bg-white border border-slate-100 rounded-lg shadow-xs">
+                      <CheckCircle2 size={16} className="text-emerald-500" />
+                      <span className="text-sm font-medium text-slate-700">{s}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-4">
+                <h3 className="font-bold text-slate-800 flex items-center gap-2"><AlertTriangle size={18} className="text-rose-500"/> Growth Blockers</h3>
+                <div className="grid gap-3">
+                  {["High-Friction Booking", "Vague Market Positioning", "Severe Underpricing", "Dated Digital Presence"].map(w => (
+                    <div key={w} className="flex items-center gap-3 p-3 bg-white border border-slate-100 rounded-lg shadow-xs">
+                      <AlertTriangle size={16} className="text-rose-400" />
+                      <span className="text-sm font-medium text-slate-700">{w}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <Card className="bg-white border border-slate-200">
+              <h3 className="font-bold text-lg mb-4">Competitor Landscape</h3>
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-100 text-slate-400">
+                      <th className="pb-3 pr-4 font-semibold uppercase tracking-wider text-[10px]">Entity</th>
+                      <th className="pb-3 px-4 font-semibold uppercase tracking-wider text-[10px]">Positioning</th>
+                      <th className="pb-3 px-4 font-semibold uppercase tracking-wider text-[10px]">Primary Weakness</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-50">
+                    <tr>
+                      <td className="py-4 pr-4 font-bold text-indigo-600">Hearts of Zagreb</td>
+                      <td className="py-4 px-4 text-slate-600">Interactive B2C (Workshop)</td>
+                      <td className="py-4 px-4 text-rose-500">Volatile reviews / Offline friction</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 pr-4 font-bold text-slate-800">Okrugljak</td>
+                      <td className="py-4 px-4 text-slate-600">Elite Restaurant Heritage</td>
+                      <td className="py-4 px-4">Suburban location / High cost</td>
+                    </tr>
+                    <tr>
+                      <td className="py-4 pr-4 font-bold text-slate-800">LADO Ensemble</td>
+                      <td className="py-4 px-4 text-slate-600">National High Art</td>
+                      <td className="py-4 px-4">Infrequent / Hard to access</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+          </div>
+        )}
+
+        {/* TAB: STRATEGY */}
+        {activeTab === 'strategy' && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-8">
+            <h2 className="text-3xl font-bold text-center">Strategic Choice Architecture</h2>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              
+              {/* Path A */}
+              <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 p-6 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                <Badge>Path A</Badge>
+                <h3 className="text-xl font-bold mt-4 mb-2">The Premium B2B Partner</h3>
+                <p className="text-sm text-slate-500 flex-grow">Prioritize becoming the preferred provider for DMCs, MICE, and high-margin corporate events.</p>
+                <ul className="mt-6 space-y-3 text-xs text-slate-600">
+                  <li className="flex items-start gap-2"><Info size={14} className="mt-0.5 text-indigo-400"/> Password-protected Partner Portal</li>
+                  <li className="flex items-start gap-2"><Info size={14} className="mt-0.5 text-indigo-400"/> Industry Showcase Nights</li>
+                </ul>
+              </div>
+
+              {/* Path C - RECOMMENDED */}
+              <div className="flex flex-col h-full bg-indigo-50 rounded-2xl border-2 border-indigo-600 p-6 relative shadow-xl transform lg:scale-105 z-10">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg">RECOMMENDED</div>
+                <Badge variant="primary">Path C</Badge>
+                <h3 className="text-2xl font-black text-indigo-900 mt-4 mb-2">Hybrid Destination Brand</h3>
+                <p className="text-sm text-indigo-700/80 flex-grow">A balanced strategy: Establish EtnoSphere as <strong>the</strong> definitive Night Out brand, capturing both FIT volume and high-value group B2B demand.</p>
+                <div className="mt-6 p-4 bg-indigo-600 rounded-xl text-white space-y-3">
+                  <div className="text-[10px] font-bold uppercase tracking-widest text-indigo-200">The Rationale</div>
+                  <p className="text-sm font-medium">B2C success creates "Pull Demand." When FITs rave about it, DMCs are forced to include it.</p>
+                </div>
+              </div>
+
+              {/* Path B */}
+              <div className="flex flex-col h-full bg-white rounded-2xl border border-slate-200 p-6 opacity-60 grayscale hover:grayscale-0 hover:opacity-100 transition-all">
+                <Badge>Path B</Badge>
+                <h3 className="text-xl font-bold mt-4 mb-2">B2C Volume Leader</h3>
+                <p className="text-sm text-slate-500 flex-grow">Maximize visibility on OTAs (Viator, Airbnb) and focus on rapid review velocity and mobile conversion.</p>
+                <ul className="mt-6 space-y-3 text-xs text-slate-600">
+                  <li className="flex items-start gap-2"><Info size={14} className="mt-0.5 text-indigo-400"/> OTA Dominance (25% comm)</li>
+                  <li className="flex items-start gap-2"><Info size={14} className="mt-0.5 text-indigo-400"/> 2-Click Booking Experience</li>
+                </ul>
+              </div>
+            </div>
+
+            <Card className="bg-slate-900 text-white">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold">Execution Milestone: Digital Transformation</h3>
+                  <p className="text-slate-400 text-sm">Replace "Brochure-ware" with a high-performance transactional engine.</p>
+                </div>
+                <div className="flex gap-4">
+                  <div className="text-center px-4 py-2 bg-white/5 rounded-lg border border-white/10">
+                    <div className="text-xs text-slate-500 uppercase">Target Price</div>
+                    <div className="text-xl font-bold text-emerald-400">€65+</div>
+                  </div>
+                  <div className="text-center px-4 py-2 bg-white/5 rounded-lg border border-white/10">
+                    <div className="text-xs text-slate-500 uppercase">Yield uplift</div>
+                    <div className="text-xl font-bold text-indigo-400">+44%</div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </div>
+        )}
+      </main>
+
+      {/* FOOTER */}
+      <footer className="mt-20 py-10 border-t border-slate-200 bg-white">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6 opacity-60">
+          <div className="flex items-center gap-2">
+            <LayoutDashboard size={18} />
+            <span className="text-sm font-semibold">Strategic Decision Deck</span>
+          </div>
+          <div className="text-xs font-mono">
+            EtnoSphere.OS v1.0 // Zagreb, Croatia
+          </div>
+          <div className="text-xs text-slate-400">
+            Strictly Confidential - Internal Ownership Only
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
