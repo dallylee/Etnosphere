@@ -28,8 +28,21 @@ import {
   Smartphone,
   MousePointer,
   Eye,
-  Clock
+  Clock,
+  FileImage,
+  Image,
+  FileText,
+  Headphones,
+  Play
 } from 'lucide-react';
+
+// Image imports for infographics
+import img4 from './assets/images/img4.png';
+import img5 from './assets/images/img5.png';
+import img6 from './assets/images/img6.png';
+import img7 from './assets/images/img7.png';
+import img8 from './assets/images/img8.png';
+import img9 from './assets/images/img9.png';
 
 // --- Shared Components ---
 
@@ -297,6 +310,7 @@ export default function App() {
     { id: 'diagnosis', label: 'Strategic Audit', icon: BarChart3 },
     { id: 'strategy', label: 'Growth Roadmap', icon: MapPin },
     { id: 'metrics', label: 'Success Metrics', icon: TrendingUp },
+    { id: 'media', label: 'Media Files', icon: FileImage },
   ];
 
   const NavButton = ({ active, onClick, children, icon: Icon }) => (
@@ -791,6 +805,113 @@ export default function App() {
                 <button onClick={() => setActiveSection('executive')} className="bg-white text-indigo-950 px-10 py-4 rounded-xl font-bold hover:bg-indigo-50 transition-all hover:scale-105 shadow-lg">
                   Return to Executive Summary
                 </button>
+              </div>
+            </div>
+          </div>
+        );
+      case 'media':
+        return (
+          <div className="space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <SectionHeader badge="Resources" title="Media Files" subtitle="Access infographics, strategic documents, and audio content." />
+
+            {/* Infographic Section */}
+            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                  <Image size={20} className="text-purple-600" />
+                </div>
+                Infographic Gallery
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                {[img4, img5, img6, img7, img8, img9].map((img, idx) => (
+                  <a key={idx} href={img} target="_blank" rel="noopener noreferrer" className="group relative overflow-hidden rounded-2xl border border-slate-200 hover:border-indigo-300 transition-all hover:shadow-lg">
+                    <img src={img} alt={`Infographic ${idx + 4}`} className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                      <span className="text-white text-sm font-medium">Click to view full size</span>
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </div>
+
+            {/* Market Research Files Section */}
+            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center">
+                  <FileText size={20} className="text-blue-600" />
+                </div>
+                Market Research Files
+              </h3>
+              <div className="space-y-6">
+                {[
+                  { name: 'Digital Market Leadership', file: 'ETNOsphere_Digital_Market_Leadership.pdf' },
+                  { name: 'Strategic Roadmap', file: 'EtnoSphere_Strategic_Roadmap.pdf' },
+                  { name: 'Strategy Audit', file: 'Etnosphere Strategy Audit.pdf' },
+                  { name: 'Rebrand Market Research Strategy', file: 'ETNOsphere Rebrand Market Research Strategy.pdf' },
+                  { name: 'Owner Insight Pack & Strategic Roadmap', file: 'EtnoSphere_ Owner Insight Pack & Strategic Roadmap.pdf' },
+                  { name: 'Market Research for Rebrand & Website Overhaul', file: 'Market Research for ETNOsphere Rebrand & Website Overhaul.pdf' },
+                  { name: 'Strategic Growth Options', file: 'Strategic Growth Options.pdf' },
+                ].map((doc, idx) => (
+                  <div key={idx} className="border border-slate-200 rounded-2xl overflow-hidden">
+                    <div className="bg-slate-50 px-6 py-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FileText size={18} className="text-blue-500" />
+                        <span className="font-medium text-slate-700">{doc.name}</span>
+                      </div>
+                      <a href={`/Etnosphere/${doc.file}`} target="_blank" rel="noopener noreferrer" className="text-sm text-indigo-600 hover:text-indigo-800 font-medium">
+                        Open in new tab ↗
+                      </a>
+                    </div>
+                    <iframe
+                      src={`/Etnosphere/${doc.file}`}
+                      width="100%"
+                      height="500px"
+                      title={doc.name}
+                      className="border-t border-slate-200"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Podcast Section */}
+            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+              <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
+                <div className="w-10 h-10 bg-rose-100 rounded-xl flex items-center justify-center">
+                  <Headphones size={20} className="text-rose-600" />
+                </div>
+                Etnosphera Podcast
+              </h3>
+              <div className="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-8 text-white">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-16 h-16 bg-white/10 rounded-xl flex items-center justify-center">
+                    <Play size={28} className="text-white" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold">Bitka za zagrebačko tržište večernjih doživljaja</h4>
+                    <p className="text-indigo-200 text-sm">Market Analysis Audio</p>
+                  </div>
+                </div>
+                <audio controls className="w-full">
+                  <source src="/Etnosphere/Bitka_za_zagrebacko_trziste_vecernjih_dozivljaja.m4a" type="audio/mp4" />
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+
+            {/* Navigation Footer */}
+            <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-12 rounded-3xl text-center relative overflow-hidden shadow-2xl">
+              <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+              <div className="relative z-10 max-w-2xl mx-auto space-y-6">
+                <h3 className="text-2xl md:text-3xl font-serif font-bold">Explore More Sections</h3>
+                <div className="flex flex-wrap justify-center gap-4">
+                  <button onClick={() => setActiveSection('executive')} className="bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-3 rounded-xl font-medium transition-all">
+                    Executive Summary
+                  </button>
+                  <button onClick={() => setActiveSection('strategy')} className="bg-white/10 hover:bg-white/20 border border-white/20 px-6 py-3 rounded-xl font-medium transition-all">
+                    Growth Roadmap
+                  </button>
+                </div>
               </div>
             </div>
           </div>
